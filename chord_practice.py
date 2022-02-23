@@ -4,6 +4,7 @@ import ui
 
 screen_width = ui.get_screen_size().width
 
+# Table view: Notes
 tv_notes = ui.TableView()
 tv_notes.border_width = 0
 tv_notes.x = 0
@@ -11,21 +12,33 @@ tv_notes.y = 0
 tv_notes.width = screen_width / 3
 tv_notes.height = 150
 
+# Table view: Accidentals
 tv_alter = ui.TableView()
 tv_alter.border_width = 0
-tv_alter.x = screen_width / 3
+tv_alter.x = 0
 tv_alter.y = 0
 tv_alter.width = screen_width / 3
 tv_alter.height = 150
 
+# Table view: Chord type
 tv_type = ui.TableView()
 tv_type.border_width = 0
-tv_type.x = 2 * screen_width / 3
+tv_type.x = screen_width / 3
 tv_type.y = 0
 tv_type.width = screen_width / 3
 tv_type.height = 150
+tv_type.allows_multiple_selection = True
 
-# Button: convert
+# Table view: Chord view
+tv_view = ui.TableView()
+tv_view.border_width = 0
+tv_view.x = 2 * screen_width / 3
+tv_view.y = 0
+tv_view.width = screen_width / 3
+tv_view.height = 150
+
+
+# Button: generate chord
 bt_generator = ui.Button()
 bt_generator.border_width = 4
 bt_generator.title = 'Generate'
@@ -53,6 +66,7 @@ class MyClass(ui.View):
 	selected_note = ""
 	selected_alter = ""
 	selected_type = ""
+	selected_view = ""
 
 	types = []
 
@@ -61,12 +75,11 @@ class MyClass(ui.View):
 	all_notes = Note('C').all()
 
 	for note in all_notes:
-		#if note.accidental != '#':
 		notes.append(str(note))
 
 	data_src_notes = ui.ListDataSource(notes)
 
-	# определяем знаки альтерации
+	# ListDataSource for accidentals
 	alter = ['all', 'b', '#']
 
 	data_src_alter = ui.ListDataSource(alter)
@@ -76,6 +89,11 @@ class MyClass(ui.View):
 		types.append(key)
 
 	data_src_type = ui.ListDataSource(types)
+	
+	# определяем как будет выглядеть аккорд
+	chord_views = ['Random', 'maj, min', 'M, m']
+
+	data_src_view = ui.ListDataSource(chord_views)
 
 	#-------------------------
 
@@ -86,9 +104,9 @@ class MyClass(ui.View):
 		self.make_view()
 
 	def make_view(self):
-		self.add_subview(tv_notes)
 		self.add_subview(tv_alter)
 		self.add_subview(tv_type)
+		self.add_subview(tv_view)
 		self.add_subview(bt_generator)
 		self.add_subview(txtv_info)
 
@@ -105,6 +123,12 @@ class MyClass(ui.View):
 
 		tv_type.data_source = tv_type.delegate = self.data_src_type
 
+		# View
+		self.data_src_view.action = self.fn_view_selected
+
+		tv_view.data_source = tv_view.delegate = self.data_src_view
+		
+		# Button: gnerate
 		bt_generator.action = self.fn_generate
 
 	def fn_note_selected(self, sender):
@@ -115,15 +139,20 @@ class MyClass(ui.View):
 
 	def fn_type_selected(self, sender):
 		self.selected_type = sender.items[sender.selected_row]
+		
+	def fn_view_selected(self, sender):
+		self.selected_view = sender.items[sender.selected_row]
 
 	def fn_generate(self, sender):
-
 		notes = Note('C').all()
 
 		chords = []
+		
+		if self.selected_alter == '':
+			self.selected_alter = 'all'
 
 		for note in notes:
-			if note.accidental == self.selected_alter or note.accidental == '':
+			if self.selected_alter == 'all' or note.accidental == self.selected_alter or note.accidental == '':
 				chords.append(str(Chord(note, chord_type=self.selected_type)))
 
 		txtv_info.text = ', '.join(random.sample(chords, len(chords)))
