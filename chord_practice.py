@@ -2,62 +2,70 @@ import random
 from musthe import *
 import ui
 
+symbols_maj = ['','maj','M']
+symbols_min = ['-','min','m']
+
 screen_width = ui.get_screen_size().width
 
-# Table view: Notes
-tv_notes = ui.TableView()
-tv_notes.border_width = 0
-tv_notes.x = 0
-tv_notes.y = 0
-tv_notes.width = screen_width / 3
-tv_notes.height = 150
+tv_height = 125
+tv_x_pos = screen_width / 3
+tv_y_pos = 0
 
 # Table view: Accidentals
 tv_alter = ui.TableView()
 tv_alter.border_width = 0
-tv_alter.x = 0
-tv_alter.y = 0
+tv_alter.x = 0 * tv_x_pos
+tv_alter.y = tv_y_pos
 tv_alter.width = screen_width / 3
-tv_alter.height = 150
+tv_alter.height = tv_height
 
 # Table view: Chord type
 tv_type = ui.TableView()
 tv_type.border_width = 0
-tv_type.x = screen_width / 3
-tv_type.y = 0
+tv_type.x = 1 * tv_x_pos
+tv_type.y = tv_y_pos
 tv_type.width = screen_width / 3
-tv_type.height = 150
+tv_type.height = tv_height
 tv_type.allows_multiple_selection = True
 
 # Table view: Chord view
 tv_view = ui.TableView()
 tv_view.border_width = 0
-tv_view.x = 2 * screen_width / 3
+tv_view.x = 2 * tv_x_pos
 tv_view.y = 0
 tv_view.width = screen_width / 3
-tv_view.height = 150
+tv_view.height = tv_height
 
 
 # Button: generate chord
+bt_height = 50
+bt_x_pos = 0
+bt_y_pos = tv_height + 5
+
 bt_generator = ui.Button()
 bt_generator.border_width = 4
 bt_generator.title = 'Generate'
-bt_generator.x = 0
-bt_generator.y = 155
+bt_generator.x = bt_x_pos
+bt_generator.y = bt_y_pos
 bt_generator.width = screen_width
-bt_generator.height = 50
+bt_generator.height = bt_height
 bt_generator.font = ('verdana', 25)
 bt_generator.corner_radius = 20
 
 # TextView: amount about conversion
+txtv_height = 280
+txtv_x_pos = 0
+txtv_y_pos = bt_y_pos + bt_height + 5
+
 txtv_info = ui.TextView()
+txtv_info.alignment = ui.ALIGN_CENTER
 txtv_info.border_width = 0
-txtv_info.x = 0
-txtv_info.y = 210
+txtv_info.x = txtv_x_pos
+txtv_info.y = txtv_y_pos
 txtv_info.width = screen_width
-txtv_info.height = 250
+txtv_info.height = txtv_height
 txtv_info.editable = False
-txtv_info.font = ('verdana', 18)
+txtv_info.font = ('verdana-bold', 30)
 
 
 
@@ -80,7 +88,7 @@ class MyClass(ui.View):
 	data_src_notes = ui.ListDataSource(notes)
 
 	# ListDataSource for accidentals
-	alter = ['all', 'b', '#']
+	alter = ['b', '#', 'all']
 
 	data_src_alter = ui.ListDataSource(alter)
 
@@ -91,7 +99,7 @@ class MyClass(ui.View):
 	data_src_type = ui.ListDataSource(types)
 	
 	# определяем как будет выглядеть аккорд
-	chord_views = ['Random', 'maj, min', 'M, m']
+	chord_views = ['Random', 'Default', 'No']
 
 	data_src_view = ui.ListDataSource(chord_views)
 
@@ -111,10 +119,6 @@ class MyClass(ui.View):
 		self.add_subview(txtv_info)
 
 		# Actions
-		self.data_src_notes.action = self.fn_note_selected
-
-		tv_notes.data_source = tv_notes.delegate = self.data_src_notes
-
 		self.data_src_alter.action = self.fn_alter_selected
 
 		tv_alter.data_source = tv_alter.delegate = self.data_src_alter
@@ -145,17 +149,44 @@ class MyClass(ui.View):
 
 	def fn_generate(self, sender):
 		notes = Note('C').all()
-
 		chords = []
+		all_chords = []
 		
-		if self.selected_alter == '':
-			self.selected_alter = 'all'
+		if self.selected_alter == '' and self.selected_type == '':
+			txtv_info.text = 'Select accidentals and chord type'
+			
+		elif self.selected_type == '':
+			txtv_info.text = 'Select accidentals'
+			
+		elif self.selected_view == '':
+			txtv_info.text = 'Select chord type'
+			
+		else:
 
-		for note in notes:
-			if self.selected_alter == 'all' or note.accidental == self.selected_alter or note.accidental == '':
-				chords.append(str(Chord(note, chord_type=self.selected_type)))
+			for note in notes:
+				if self.selected_alter == 'all' or note.accidental == self.selected_alter or note.accidental == '':
+					chords.append(str(Chord(note, chord_type=self.selected_type)))
+					
+			# подмена мтандарта
+			if self.selected_view == 'Random':
+				
+				
+				for ch in chords:
+					sym = random.choice(symbols_maj)
+					ch = ch.replace('maj', sym)
+					
+					all_chords.append(ch)
+			elif self.selected_view == 'No':
+				for ch in chords:
+					sym = ''
+					ch = ch.replace('maj', sym)
+					
+					all_chords.append(ch)
+			else:
+				all_chords = chords
 
-		txtv_info.text = ', '.join(random.sample(chords, len(chords)))
+			
+			txtv_info.text = ', '.join(random.sample(all_chords, len(all_chords)))
 
 
 v = MyClass(name='CHORD GENERATOR')
