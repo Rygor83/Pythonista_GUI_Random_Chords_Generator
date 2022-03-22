@@ -12,6 +12,7 @@ symbols_min7b5 = ['min7b5','m7b5','-7b5']
 symbols_dom7 = ['dom7','7']
 
 screen_width = ui.get_screen_size().width
+screen_height = ui.get_screen_size().height
 
 tv_height = 125
 tv_x_pos = screen_width / 3
@@ -44,7 +45,7 @@ tv_view.height = tv_height
 
 
 # Button: generate chord
-bt_height = 50
+bt_height = 40
 bt_x_pos = 0
 bt_y_pos = tv_height + 5
 
@@ -56,10 +57,10 @@ bt_generator.y = bt_y_pos
 bt_generator.width = screen_width
 bt_generator.height = bt_height
 bt_generator.font = ('verdana', 25)
-bt_generator.corner_radius = 20
+bt_generator.corner_radius = 10
 
 # TextView: amount about conversion
-txtv_height = 280
+txtv_height = screen_height -  tv_height - tv_height - bt_height + 15 #280
 txtv_x_pos = 0
 txtv_y_pos = bt_y_pos + bt_height + 5
 
@@ -149,9 +150,9 @@ class MyClass(ui.View):
 		self.selected_alter = sender.items[sender.selected_row]
 
 	def fn_type_selected(self, sender):
-		self.selected_type = sender.items[sender.selected_row]
-		
 		self.selected_types.append(sender.items[sender.selected_row])
+		
+		#print(sender.tableview.selected_rows)
 		
 	def fn_view_selected(self, sender):
 		self.selected_view = sender.items[sender.selected_row]
@@ -165,63 +166,66 @@ class MyClass(ui.View):
 		if self.selected_alter == '':
 			txtv_info.text = 'Select accidentals'
 			
-		elif self.selected_type == '':
+		elif self.selected_types == []:
 			txtv_info.text = 'Select chord type'
 			
 		elif self.selected_view == '':
 			txtv_info.text = 'Select output type'
 			
 		else:
-
+			
 			for note in notes:
-				if self.selected_alter == 'all' or note.accidental == self.selected_alter or note.accidental == '':
+				for item_type in self.selected_types:
 					
-					new_chord = str(Chord(note, chord_type=self.selected_type))
-					
-					# заменяем обозначения
-					if self.selected_view == 'Random':
+					if self.selected_alter == 'all' or note.accidental == self.selected_alter or note.accidental == '':
 						
-						if self.selected_type == 'M':
-							sym = random.choice(symbols_maj)
-							new_chord = new_chord.replace('maj', sym)
+						new_chord = str(Chord(note, chord_type=item_type))
+						
+						# заменяем обозначения
+						if self.selected_view == 'Random':
 							
-						elif self.selected_type == 'm':
-							sym = random.choice(symbols_min)
-							new_chord = new_chord.replace('min', sym)
-						
-						elif self.selected_type == 'M7':
-							sym = random.choice(symbols_maj7)
-							new_chord = new_chord.replace('maj7', sym)
+							if item_type == 'M':
+								sym = random.choice(symbols_maj)
+								new_chord = new_chord.replace('maj', sym)
+								
+							elif item_type == 'm':
+								sym = random.choice(symbols_min)
+								new_chord = new_chord.replace('min', sym)
 							
-						elif self.selected_type == 'm7':
-							sym = random.choice(symbols_min7)
-							new_chord = new_chord.replace('min7', sym)
-						
-						elif self.selected_type == 'm7b5':
-							sym = random.choice(symbols_min7b5)
-							new_chord = new_chord.replace('m7dim5', sym)
-						
-						elif self.selected_type == '7':
-							sym = random.choice(symbols_dom7)
-							new_chord = new_chord.replace('dom7', sym)
+							elif item_type == 'M7':
+								sym = random.choice(symbols_maj7)
+								new_chord = new_chord.replace('maj7', sym)
+								
+							elif item_type == 'm7':
+								sym = random.choice(symbols_min7)
+								new_chord = new_chord.replace('min7', sym)
 							
-					elif self.selected_view == 'Default':
-						if self.selected_type == 'M':
-							sym = ''
-							new_chord = new_chord.replace('maj', sym)
-						elif self.selected_type == 'm':
-							sym = 'm'
-							new_chord = new_chord.replace('min', sym)
-						elif self.selected_type == 'maj7':
-							1 == 1
+							elif item_type == 'm7b5':
+								sym = random.choice(symbols_min7b5)
+								new_chord = new_chord.replace('m7dim5', sym)
 							
-						elif self.selected_type == 'maj7':
-							1 == 1
-						
-						elif self.selected_type == '7':
-							sym = '7'
-							new_chord = new_chord.replace('dom7', sym)
-					all_chords.append(new_chord)
+							elif item_type == '7':
+								sym = random.choice(symbols_dom7)
+								new_chord = new_chord.replace('dom7', sym)
+								
+						elif self.selected_view == 'Default':
+							
+							if item_type == 'M':
+								sym = ''
+								new_chord = new_chord.replace('maj', sym)
+							elif item_type == 'm':
+								sym = 'm'
+								new_chord = new_chord.replace('min', sym)
+							elif item_type == 'maj7':
+								1 == 1
+								
+							elif item_type == 'maj7':
+								1 == 1
+							
+							elif item_type == '7':
+								sym = '7'
+								new_chord = new_chord.replace('dom7', sym)
+						all_chords.append(new_chord)
 			
 			txtv_info.text = ', '.join(random.sample(all_chords, len(all_chords)))
 
