@@ -4,12 +4,12 @@ import ui
 
 triangle = chr(9651)
 
-symbols_maj = ['','maj','M']
-symbols_min = ['-','min','m']
-symbols_maj7 = ['maj7','M7', triangle]
-symbols_min7 = ['min7','m7','-7']
-symbols_min7b5 = ['min7b5','m7b5','-7b5']
-symbols_dom7 = ['dom7','7']
+symbols_maj = ['', 'maj', 'M']
+symbols_min = ['-', 'min', 'm']
+symbols_maj7 = ['maj7', 'M7', triangle]
+symbols_min7 = ['min7', 'm7', '-7']
+symbols_min7b5 = ['min7b5', 'm7b5', '-7b5']
+symbols_dom7 = ['dom7', '7']
 
 screen_width = ui.get_screen_size().width
 screen_height = ui.get_screen_size().height
@@ -43,7 +43,6 @@ tv_view.y = 0
 tv_view.width = screen_width / 3
 tv_view.height = tv_height
 
-
 # Button: generate chord
 bt_height = 40
 bt_x_pos = 0
@@ -60,7 +59,7 @@ bt_generator.font = ('verdana', 25)
 bt_generator.corner_radius = 10
 
 # TextView: amount about conversion
-txtv_height = screen_height -  tv_height - tv_height - bt_height + 15 #280
+txtv_height = screen_height - tv_height - tv_height - bt_height + 15  #280
 txtv_x_pos = 0
 txtv_y_pos = bt_y_pos + bt_height + 5
 
@@ -75,6 +74,22 @@ txtv_info.editable = False
 txtv_info.font = ('verdana-bold', 30)
 
 
+class MyTableViewDelegate(object):
+	
+	def __init__(self, items):
+		self.items = items
+		self.selected_items = []
+		self.currentNumLines = len(items)
+		self.currentTitle = 'Type'
+	
+	
+	def tableview_did_select(self, tableview, section, row):
+		# Called when a row was selected.
+		self.selected_items.append(self.items[row])
+
+	def tableview_did_deselect(self, tableview, section, row):
+		# Called when a row was de-selected (in multiple selection mode).
+		self.selected_items.remove(self.items[row])
 
 class MyClass(ui.View):
 
@@ -105,7 +120,7 @@ class MyClass(ui.View):
 		types.append(key)
 
 	data_src_type = ui.ListDataSource(types)
-	
+
 	# определяем как будет выглядеть аккорд
 	chord_views = ['Random', 'Default', 'Musthe']
 
@@ -133,13 +148,15 @@ class MyClass(ui.View):
 
 		self.data_src_type.action = self.fn_type_selected
 
-		tv_type.data_source = tv_type.delegate = self.data_src_type
+		tv_type.data_source = self.data_src_type
+		
+		tv_type.delegate = MyTableViewDelegate(self.types)
 
 		# View
 		self.data_src_view.action = self.fn_view_selected
 
 		tv_view.data_source = tv_view.delegate = self.data_src_view
-		
+
 		# Button: gnerate
 		bt_generator.action = self.fn_generate
 
@@ -149,67 +166,62 @@ class MyClass(ui.View):
 	def fn_alter_selected(self, sender):
 		self.selected_alter = sender.items[sender.selected_row]
 
-	def fn_type_selected(self, sender):
-		self.selected_types.append(sender.items[sender.selected_row])
-		
-		#print(sender.tableview.selected_rows)
-		
 	def fn_view_selected(self, sender):
 		self.selected_view = sender.items[sender.selected_row]
 
 	def fn_generate(self, sender):
-		
+
 		notes = Note('C').all()
 		chords = []
 		all_chords = []
-		
+
 		if self.selected_alter == '':
 			txtv_info.text = 'Select accidentals'
-			
-		elif self.selected_types == []:
+
+		elif tv_type.delegate.selected_items == []:
 			txtv_info.text = 'Select chord type'
-			
+
 		elif self.selected_view == '':
 			txtv_info.text = 'Select output type'
-			
+
 		else:
-			
+
 			for note in notes:
-				for item_type in self.selected_types:
-					
+				for item_type in tv_type.delegate.selected_items:
+
 					if self.selected_alter == 'all' or note.accidental == self.selected_alter or note.accidental == '':
-						
+
 						new_chord = str(Chord(note, chord_type=item_type))
-						
+
 						# заменяем обозначения
 						if self.selected_view == 'Random':
-							
+
 							if item_type == 'M':
 								sym = random.choice(symbols_maj)
 								new_chord = new_chord.replace('maj', sym)
-								
+
 							elif item_type == 'm':
 								sym = random.choice(symbols_min)
 								new_chord = new_chord.replace('min', sym)
-							
+
 							elif item_type == 'M7':
 								sym = random.choice(symbols_maj7)
 								new_chord = new_chord.replace('maj7', sym)
-								
+
 							elif item_type == 'm7':
 								sym = random.choice(symbols_min7)
 								new_chord = new_chord.replace('min7', sym)
-							
+
 							elif item_type == 'm7b5':
 								sym = random.choice(symbols_min7b5)
 								new_chord = new_chord.replace('m7dim5', sym)
-							
+
 							elif item_type == '7':
 								sym = random.choice(symbols_dom7)
 								new_chord = new_chord.replace('dom7', sym)
-								
+
 						elif self.selected_view == 'Default':
-							
+
 							if item_type == 'M':
 								sym = ''
 								new_chord = new_chord.replace('maj', sym)
@@ -218,15 +230,15 @@ class MyClass(ui.View):
 								new_chord = new_chord.replace('min', sym)
 							elif item_type == 'maj7':
 								1 == 1
-								
+
 							elif item_type == 'maj7':
 								1 == 1
-							
+
 							elif item_type == '7':
 								sym = '7'
 								new_chord = new_chord.replace('dom7', sym)
 						all_chords.append(new_chord)
-			
+
 			txtv_info.text = ', '.join(random.sample(all_chords, len(all_chords)))
 
 
