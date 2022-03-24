@@ -4,13 +4,6 @@ import ui
 
 triangle = chr(9651)
 
-symbols_maj = ['', 'maj', 'M']
-symbols_min = ['-', 'min', 'm']
-symbols_maj7 = ['maj7', 'M7', triangle]
-symbols_min7 = ['min7', 'm7', '-7']
-symbols_min7b5 = ['min7b5', 'm7b5', '-7b5']
-symbols_dom7 = ['dom7', '7']
-
 screen_width = ui.get_screen_size().width
 screen_height = ui.get_screen_size().height
 
@@ -74,15 +67,149 @@ txtv_info.editable = False
 txtv_info.font = ('verdana-bold', 30)
 
 
-class MyTableViewDelegate(object):
+class Major():
+
+	sym_short = 'M'
+	sym = 'maj'
+	sym_default = ''
+	symbols = ['', 'maj', 'M']
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+
+class Minor():
+
+	sym_short = 'm'
+	sym = 'min'
+	sym_default = 'm'
+	symbols = ['-', 'min', 'm']
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+
+class Major7():
+
+	sym_short = 'M7'
+	sym = 'maj7'
+	sym_default = ''
+	symbols = ['maj7', 'M7', triangle]
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+
+class Minor7():
+
+	sym_short = 'm7'
+	sym = 'min7'
+	sym_default = 'm7'
+	symbols = ['min7', 'm7', '-7']
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+
+class Dominant7():
+
+	sym_short = '7'
+	sym = 'dom7'
+	sym_default = '7'
+	symbols = ['dom7', '7']
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+
+class Augimented():
+
+	sym_short = '+'
+	sym = 'aug'
+	sym_default = 'aug'
+	symbols = ['M#5', 'M+5']
 	
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+class Diminished():
+
+	sym_short = '°'
+	sym = 'dim'
+	sym_default = 'dim'
+	symbols = ['mb5', 'm°5']
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+obj = {
+	'M': Major(),
+	'm': Minor(),
+	'+': Augimented(),
+	'°': Diminished(),
+	'M7': Major7(),
+	'm7': Minor7(),
+	'7': Dominant7()
+}
+
+
+class MyTableViewDelegate(object):
 	def __init__(self, items):
 		self.items = items
 		self.selected_items = []
 		self.currentNumLines = len(items)
 		self.currentTitle = 'Type'
-	
-	
+
 	def tableview_did_select(self, tableview, section, row):
 		# Called when a row was selected.
 		self.selected_items.append(self.items[row])
@@ -90,6 +217,7 @@ class MyTableViewDelegate(object):
 	def tableview_did_deselect(self, tableview, section, row):
 		# Called when a row was de-selected (in multiple selection mode).
 		self.selected_items.remove(self.items[row])
+
 
 class MyClass(ui.View):
 
@@ -146,10 +274,8 @@ class MyClass(ui.View):
 
 		tv_alter.data_source = tv_alter.delegate = self.data_src_alter
 
-		self.data_src_type.action = self.fn_type_selected
-
 		tv_type.data_source = self.data_src_type
-		
+
 		tv_type.delegate = MyTableViewDelegate(self.types)
 
 		# View
@@ -174,6 +300,7 @@ class MyClass(ui.View):
 		notes = Note('C').all()
 		chords = []
 		all_chords = []
+		new_chord = ''
 
 		if self.selected_alter == '':
 			txtv_info.text = 'Select accidentals'
@@ -196,47 +323,14 @@ class MyClass(ui.View):
 						# заменяем обозначения
 						if self.selected_view == 'Random':
 
-							if item_type == 'M':
-								sym = random.choice(symbols_maj)
-								new_chord = new_chord.replace('maj', sym)
+							t = obj[item_type]
 
-							elif item_type == 'm':
-								sym = random.choice(symbols_min)
-								new_chord = new_chord.replace('min', sym)
-
-							elif item_type == 'M7':
-								sym = random.choice(symbols_maj7)
-								new_chord = new_chord.replace('maj7', sym)
-
-							elif item_type == 'm7':
-								sym = random.choice(symbols_min7)
-								new_chord = new_chord.replace('min7', sym)
-
-							elif item_type == 'm7b5':
-								sym = random.choice(symbols_min7b5)
-								new_chord = new_chord.replace('m7dim5', sym)
-
-							elif item_type == '7':
-								sym = random.choice(symbols_dom7)
-								new_chord = new_chord.replace('dom7', sym)
+							new_chord = t.replace(new_chord)
 
 						elif self.selected_view == 'Default':
 
-							if item_type == 'M':
-								sym = ''
-								new_chord = new_chord.replace('maj', sym)
-							elif item_type == 'm':
-								sym = 'm'
-								new_chord = new_chord.replace('min', sym)
-							elif item_type == 'maj7':
-								1 == 1
-
-							elif item_type == 'maj7':
-								1 == 1
-
-							elif item_type == '7':
-								sym = '7'
-								new_chord = new_chord.replace('dom7', sym)
+							t = obj[item_type]
+							new_chord = t.replace_default(new_chord)
 						all_chords.append(new_chord)
 
 			txtv_info.text = ', '.join(random.sample(all_chords, len(all_chords)))
