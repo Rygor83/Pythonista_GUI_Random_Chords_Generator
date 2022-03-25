@@ -1,8 +1,196 @@
 import random
 from musthe import *
 import ui
+from collections import OrderedDict
 
-triangle = chr(9651)
+# Chord notation: https://en.m.wikipedia.org/wiki/Chord_notation#Triads
+
+
+# --------------------------------
+#    CLASSES FOR chord types
+# --------------------------------
+#             TRIADS
+# --------------------------------
+class Major():
+
+	sym_short = 'M'
+	sym = 'maj'
+	sym_default = ''
+	symbols = ['', 'maj', 'M']
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+
+class Minor():
+
+	sym_short = 'm'
+	sym = 'min'
+	sym_default = 'm'
+	symbols = ['-', 'min', 'm']
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+
+class Augmented():
+
+	sym_short = '+'
+	sym = 'aug'
+	sym_default = 'aug'
+	symbols = ['aug', 'M#5', 'M+5']
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+
+class Diminished():
+
+	sym_short = '°'
+	sym = 'dim'
+	sym_default = 'dim'
+	symbols = ['dim', 'mb5', 'm°5']
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+
+# --------------------------------
+#             7th
+# --------------------------------
+class Major7():
+
+	triangle = chr(9651)
+
+	sym_short = 'M7'
+	sym = 'maj7'
+	sym_default = ''
+	symbols = ['maj7', 'M7', triangle]
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+
+class Minor7():
+
+	sym_short = 'm7'
+	sym = 'min7'
+	sym_default = 'm7'
+	symbols = ['min7', 'm7', '-7']
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+
+class Dominant7():
+
+	sym_short = '7'
+	sym = 'dom7'
+	sym_default = '7'
+	symbols = ['dom7', '7']
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+
+class Augimented7():
+
+	sym_short = '+'
+	sym = 'aug'
+	sym_default = 'aug'
+	symbols = ['M#5', 'M+5']
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+
+class Diminished7():
+
+	sym_short = '°'
+	sym = 'dim'
+	sym_default = 'dim'
+	symbols = ['mb5', 'm°5']
+
+	def __init__(self):
+		pass
+
+	def replace(self, chord):
+		random_sym = random.choice(self.symbols)
+		return chord.replace(self.sym, random_sym)
+
+	def replace_default(self, chord):
+		return chord.replace(self.sym, self.sym_default)
+
+
+obj = {
+	'M': Major(),
+	'm': Minor(),
+	'+': Augmented(),
+	'°': Diminished(),
+	'M7': Major7(),
+	'm7': Minor7(),
+	'7': Dominant7()
+}
+
+# --------------------------------
+#       USER INTERFACE
+# --------------------------------
 
 screen_width = ui.get_screen_size().width
 screen_height = ui.get_screen_size().height
@@ -67,143 +255,7 @@ txtv_info.editable = False
 txtv_info.font = ('verdana-bold', 30)
 
 
-class Major():
-
-	sym_short = 'M'
-	sym = 'maj'
-	sym_default = ''
-	symbols = ['', 'maj', 'M']
-
-	def __init__(self):
-		pass
-
-	def replace(self, chord):
-		random_sym = random.choice(self.symbols)
-		return chord.replace(self.sym, random_sym)
-
-	def replace_default(self, chord):
-		return chord.replace(self.sym, self.sym_default)
-
-
-class Minor():
-
-	sym_short = 'm'
-	sym = 'min'
-	sym_default = 'm'
-	symbols = ['-', 'min', 'm']
-
-	def __init__(self):
-		pass
-
-	def replace(self, chord):
-		random_sym = random.choice(self.symbols)
-		return chord.replace(self.sym, random_sym)
-
-	def replace_default(self, chord):
-		return chord.replace(self.sym, self.sym_default)
-
-
-class Major7():
-
-	sym_short = 'M7'
-	sym = 'maj7'
-	sym_default = ''
-	symbols = ['maj7', 'M7', triangle]
-
-	def __init__(self):
-		pass
-
-	def replace(self, chord):
-		random_sym = random.choice(self.symbols)
-		return chord.replace(self.sym, random_sym)
-
-	def replace_default(self, chord):
-		return chord.replace(self.sym, self.sym_default)
-
-
-class Minor7():
-
-	sym_short = 'm7'
-	sym = 'min7'
-	sym_default = 'm7'
-	symbols = ['min7', 'm7', '-7']
-
-	def __init__(self):
-		pass
-
-	def replace(self, chord):
-		random_sym = random.choice(self.symbols)
-		return chord.replace(self.sym, random_sym)
-
-	def replace_default(self, chord):
-		return chord.replace(self.sym, self.sym_default)
-
-
-class Dominant7():
-
-	sym_short = '7'
-	sym = 'dom7'
-	sym_default = '7'
-	symbols = ['dom7', '7']
-
-	def __init__(self):
-		pass
-
-	def replace(self, chord):
-		random_sym = random.choice(self.symbols)
-		return chord.replace(self.sym, random_sym)
-
-	def replace_default(self, chord):
-		return chord.replace(self.sym, self.sym_default)
-
-
-class Augimented():
-
-	sym_short = '+'
-	sym = 'aug'
-	sym_default = 'aug'
-	symbols = ['M#5', 'M+5']
-	
-
-	def __init__(self):
-		pass
-
-	def replace(self, chord):
-		random_sym = random.choice(self.symbols)
-		return chord.replace(self.sym, random_sym)
-
-	def replace_default(self, chord):
-		return chord.replace(self.sym, self.sym_default)
-
-class Diminished():
-
-	sym_short = '°'
-	sym = 'dim'
-	sym_default = 'dim'
-	symbols = ['mb5', 'm°5']
-
-	def __init__(self):
-		pass
-
-	def replace(self, chord):
-		random_sym = random.choice(self.symbols)
-		return chord.replace(self.sym, random_sym)
-
-	def replace_default(self, chord):
-		return chord.replace(self.sym, self.sym_default)
-
-obj = {
-	'M': Major(),
-	'm': Minor(),
-	'+': Augimented(),
-	'°': Diminished(),
-	'M7': Major7(),
-	'm7': Minor7(),
-	'7': Dominant7()
-}
-
-
-class MyTableViewDelegate(object):
+class tvDelegateType(object):
 	def __init__(self, items):
 		self.items = items
 		self.selected_items = []
@@ -219,7 +271,40 @@ class MyTableViewDelegate(object):
 		self.selected_items.remove(self.items[row])
 
 
-class MyClass(ui.View):
+class tvDataSourceAlter(object):
+	def __init__(self):
+		self.i = 1
+	
+	def tableview_number_of_sections(self, tableview):
+		# Return the number of sections (defaults to 1)
+		return 1
+
+	def tableview_number_of_rows(self, tableview, section):
+		# Return the number of rows in the section
+		return 3
+
+	def tableview_cell_for_row(self, tableview, section, row):
+		# Create and return a cell for the given section/row
+		self.i = self.i + 1
+		
+		cell = ui.TableViewCell()
+		cell.text_label.text = str(row)
+		return cell
+		
+
+	def tableview_title_for_header(self, tableview, section):
+		# Return a title for the given section.
+		# If this is not implemented, no section headers will be shown.
+		return 'Accedentals'
+		
+	def fill(self, tableview, data):
+		for section in data:
+			self.tableview_title_for_header(tableview, section)
+			
+			for ind, row in enumerate(data[section]):
+				self.tableview_cell_for_row(tableview, section, row)
+
+class ChordGenerator(ui.View):
 
 	selected_note = ""
 	selected_alter = ""
@@ -239,9 +324,19 @@ class MyClass(ui.View):
 	data_src_notes = ui.ListDataSource(notes)
 
 	# ListDataSource for accidentals
-	alter = ['b', '#', 'all']
-
-	data_src_alter = ui.ListDataSource(alter)
+	alter = {'Accidentals':['b', '#', 'all']}
+	
+	
+	# data_src_alter = ui.ListDataSource(alter)
+	
+	data_src_alter =  tvDataSourceAlter()
+	
+	data_src_alter.fill(tv_alter, alter)
+	
+	tv_alter.data_source = data_src_alter
+	tv_alter.delegate = data_src_alter
+	
+	
 
 	# определяем типы аккордов
 	for key, item in Chord(Note('C')).aliases.items():
@@ -272,11 +367,9 @@ class MyClass(ui.View):
 		# Actions
 		self.data_src_alter.action = self.fn_alter_selected
 
-		tv_alter.data_source = tv_alter.delegate = self.data_src_alter
-
 		tv_type.data_source = self.data_src_type
 
-		tv_type.delegate = MyTableViewDelegate(self.types)
+		tv_type.delegate = tvDelegateType(self.types)
 
 		# View
 		self.data_src_view.action = self.fn_view_selected
@@ -336,6 +429,8 @@ class MyClass(ui.View):
 			txtv_info.text = ', '.join(random.sample(all_chords, len(all_chords)))
 
 
-v = MyClass(name='CHORD GENERATOR')
+# --------------------------------
+# MAIN
+# -------------------------------
+v = ChordGenerator(name='CHORD GENERATOR')
 v.present('full_screen')
-
