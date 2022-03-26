@@ -4,6 +4,7 @@ import ui
 
 # Chord notation: https://en.m.wikipedia.org/wiki/Chord_notation#Triads
 
+
 # --------------------------------
 #    CLASSES FOR chord types
 # --------------------------------
@@ -193,7 +194,7 @@ obj = {
 
 def circle(accidentals):
 
-	note = Note('C')
+	note = Note('C5')
 	interval = Interval('P4')
 
 	for i in range(8):
@@ -288,7 +289,7 @@ txtv_info.font = ('verdana-bold', 30)
 # Delegate and DataSource for
 # Chord types
 #----------------------------------
-class tvDelegateType(object):
+class tvDelegateType():
 	def __init__(self, title, items):
 		self.items = items
 		self.currentNumLines = len(items)
@@ -323,7 +324,6 @@ class tvDelegateType(object):
 
 		cell = ui.TableViewCell()
 		cell.text_label.text = self.items[row]['title']
-		cell.accessory_type = self.items[row]['accessory_type']
 		return cell
 
 
@@ -331,9 +331,8 @@ class tvDelegateType(object):
 # General Delegate and DataSource for
 # Accidentals and Output
 #----------------------------------
-class tvDelegateGen(
-		object
-):  #also acts as the data_source.  Can be separate, but this is easier.  
+class tvDelegateGen():
+	#also acts as the data_source.  Can be separate, but this is easier.  
 	def __init__(self, title, items):
 		self.items = items
 		self.currentNumLines = len(items)
@@ -343,7 +342,7 @@ class tvDelegateGen(
 
 	def tableview_did_select(self, tableview, section, row):
 		# Called when a row was selected
-		self.selected_item = self.items[row]['title']
+		self.selected_item = self.items[row]['value']
 
 	def tableview_did_deselect(self, tableview, section, row):
 		# Called when a row was de-selected (in multiple selection mode).
@@ -363,7 +362,6 @@ class tvDelegateGen(
 
 		cell = ui.TableViewCell()
 		cell.text_label.text = self.items[row]['title']
-		cell.accessory_type = self.items[row]['accessory_type']
 		return cell
 
 	def tableview_title_for_header(self, tableview, section):
@@ -379,26 +377,41 @@ class ChordGenerator(ui.View):
 	chord_types = ' '
 
 	# ACCIDENTALS -----------------
-	titles = "b # all Circle4th Circle5th".split()
-	itemlist = [{'title': x, 'accessory_type': 'none'} for x in titles]
+	titles = {
+		'Flats': 'b',
+		'Sharps': '#',
+		'All': 'all',
+		'Circle 4th': 'Circle4th',
+		'Circle 5th': 'Circle5th'
+	}
+	itemlist = [{'title': x, 'value': y} for x, y in titles.items()]
 
 	tv_alter.data_source = tv_alter.delegate = tvDelegateGen(
-		title='Accidentals', items=itemlist)
+		title='Notes', items=itemlist)
 
 	# CHORD TYPES -----------------
 	for key, item in Chord(Note('C')).aliases.items():
 		chord_types = chord_types + str(key) + ' '
 
-	titles = chord_types.split()
-	itemlist = [{'title': x, 'accessory_type': 'none'} for x in titles]
+	titles = {
+		f'{item} ({key})': f'{key}'
+		for key, item in Chord(Note('C')).aliases.items()
+	}
+
+	#titles = chord_types.split()
+	itemlist = [{'title': x, 'value': y} for x, y in titles.items()]
 
 	tv_type.data_source = tv_type.delegate = tvDelegateType(
 		title='Chord type', items=itemlist)
 
 	# CHORD OUTPUT -----------------
 
-	titles = "Random Default Musthe".split()
-	itemlist = [{'title': x, 'accessory_type': 'none'} for x in titles]
+	titles = {
+		'Random': 'Random',
+		'Default': 'Default',
+		'Musthe': 'Musthe',
+	}
+	itemlist = [{'title': x, 'value': y} for x, y in titles.items()]
 
 	tv_view.data_source = tv_view.delegate = tvDelegateGen(
 		title='Output', items=itemlist)
@@ -431,7 +444,7 @@ class ChordGenerator(ui.View):
 		txtv_info.text_color = 'red'
 
 		if tv_alter.delegate.selected_item == '':
-			txtv_info.text = 'Select accidentals'
+			txtv_info.text = 'Select Note type'
 		elif tv_type.delegate.selected_items == []:
 			txtv_info.text = 'Select chord type'
 		elif tv_view.delegate.selected_item == '':
@@ -447,25 +460,26 @@ class ChordGenerator(ui.View):
 							'all', 'Circle4th', 'Circle5th'
 					) or note.accidental == tv_alter.delegate.selected_item or note.accidental == '':
 
-						new_chord = str(Chord(note, chord_type=item_type['title']))
+						new_chord = str(Chord(note, chord_type=item_type['value']))
 
 						# substitue musthe chord types with custom: random or default
 						if tv_view.delegate.selected_item == 'Random':
 
-							t = obj[item_type['title']]
+							t = obj[item_type['value']]
 
 							new_chord = t.replace(new_chord)
 
 						elif tv_view.delegate.selected_item == 'Default':
 
-							t = obj[item_type['title']]
+							t = obj[item_type['value']]
 							new_chord = t.replace_default(new_chord)
 						all_chords.append(new_chord)
 
-			# random chords output
 			if tv_alter.delegate.selected_item in ('Circle4th', 'Circle5th'):
+				# Circles of 4th or 5th
 				txtv_info.text = ', '.join(all_chords)
 			else:
+				# random chords output
 				txtv_info.text = ', '.join(random.sample(all_chords, len(all_chords)))
 
 
