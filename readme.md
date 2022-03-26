@@ -24,12 +24,8 @@ Select the following parameters
      - dom7 (7): dominant 7th chord
      - min7 (m7): minor 7th
      - maj7 (M7): major 7th
-     - aug7 (+7)
-     - aug7 (7aug5)
-     - aug7 (7#5)
-     - m7dim5 (°7)
-     - m7dim5 (ø7)
-     - m7dim5 (m7b5)
+     - aug7 (7aug5): augmented 7
+     - m7dim5 (m7b5): diminished 7
 3. Chord output: what type of chord notation to use. 
      - Random: randomize chord notation display. Musthe notation is randomly substituted with all possible chord notation. For example: chord C major can be displayed as Cmaj, CM, C. C minor - Cm, Cmin, C-  
      - Default: most used notation is used. For example,  C for C major, Cm for C minor. 

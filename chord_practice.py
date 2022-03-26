@@ -4,6 +4,8 @@ import ui
 
 # Chord notation: https://en.m.wikipedia.org/wiki/Chord_notation#Triads
 
+# https://en.m.wikipedia.org/wiki/List_of_chords
+
 
 # --------------------------------
 #    CLASSES FOR chord types
@@ -141,12 +143,12 @@ class Dominant7():
 		return chord.replace(self.sym, self.sym_default)
 
 
-class Augimented7():
+class Augmented7():
 
 	sym_short = '+'
-	sym = 'aug'
-	sym_default = 'aug'
-	symbols = ['M#5', 'M+5']
+	sym = 'aug7'
+	sym_default = 'aug7'
+	symbols = ['7M#5', '7M+5']
 
 	def __init__(self):
 		pass
@@ -162,9 +164,9 @@ class Augimented7():
 class Diminished7():
 
 	sym_short = '°'
-	sym = 'dim'
-	sym_default = 'dim'
-	symbols = ['mb5', 'm°5']
+	sym = 'm7dim5'
+	sym_default = '7dim'
+	symbols = ['m7b5', 'm7°5']
 
 	def __init__(self):
 		pass
@@ -184,7 +186,9 @@ obj = {
 	'°': Diminished(),
 	'M7': Major7(),
 	'm7': Minor7(),
-	'7': Dominant7()
+	'7': Dominant7(),
+	'7#5': Augmented7(),
+	'm7b5': Diminished7(),
 }
 
 # --------------------------------
@@ -384,21 +388,18 @@ class ChordGenerator(ui.View):
 		'Circle 4th': 'Circle4th',
 		'Circle 5th': 'Circle5th'
 	}
+	
 	itemlist = [{'title': x, 'value': y} for x, y in titles.items()]
 
 	tv_alter.data_source = tv_alter.delegate = tvDelegateGen(
 		title='Notes', items=itemlist)
 
 	# CHORD TYPES -----------------
-	for key, item in Chord(Note('C')).aliases.items():
-		chord_types = chord_types + str(key) + ' '
-
 	titles = {
-		f'{item} ({key})': f'{key}'
+		f'{item}': f'{key}'
 		for key, item in Chord(Note('C')).aliases.items()
 	}
-
-	#titles = chord_types.split()
+	
 	itemlist = [{'title': x, 'value': y} for x, y in titles.items()]
 
 	tv_type.data_source = tv_type.delegate = tvDelegateType(
@@ -411,6 +412,7 @@ class ChordGenerator(ui.View):
 		'Default': 'Default',
 		'Musthe': 'Musthe',
 	}
+	
 	itemlist = [{'title': x, 'value': y} for x, y in titles.items()]
 
 	tv_view.data_source = tv_view.delegate = tvDelegateGen(
