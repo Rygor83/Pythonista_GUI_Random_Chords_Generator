@@ -1,8 +1,8 @@
 import random
-from musthe import *
+from musthe import Chord, Note, Interval
 import ui
 
-# Chord notation: https://en.m.wikipedia.org/wiki/Chord_notation#Triads
+# Chord notation: https://en.m.wikipedia.org/wiki/Chord_notation
 
 # https://en.m.wikipedia.org/wiki/List_of_chords
 
@@ -289,10 +289,10 @@ txtv_info.editable = False
 txtv_info.font = ('verdana-bold', 30)
 
 
-#----------------------------------
+# ----------------------------------
 # Delegate and DataSource for
 # Chord types
-#----------------------------------
+# ----------------------------------
 class tvDelegateType():
 	def __init__(self, title, items):
 		self.items = items
@@ -310,13 +310,13 @@ class tvDelegateType():
 		self.selected_items.remove(self.items[row])
 
 	def tableview_number_of_sections(self, tableview):
-		# Return the number of sections (defaults to 1). Someone else can mess with 
+		# Return the number of sections (defaults to 1). Someone else can mess with
 		# sections and section logic
 		return 1
 
 	def tableview_number_of_rows(self, tableview, section):
 		# Return the number of rows in the section
-		return self.currentNumLines  #needed to be in sync with displayed version, 
+		return self.currentNumLines  # needed to be in sync with displayed version
 
 	def tableview_title_for_header(self, tableview, section):
 		# Return a title for the given section.
@@ -331,12 +331,12 @@ class tvDelegateType():
 		return cell
 
 
-#----------------------------------
+# ----------------------------------
 # General Delegate and DataSource for
 # Accidentals and Output
-#----------------------------------
+# ----------------------------------
 class tvDelegateGen():
-	#also acts as the data_source.  Can be separate, but this is easier.  
+	# also acts as the data_source. Can be separate, but this is easier.
 	def __init__(self, title, items):
 		self.items = items
 		self.currentNumLines = len(items)
@@ -353,13 +353,13 @@ class tvDelegateGen():
 		pass
 
 	def tableview_number_of_sections(self, tableview):
-		# Return the number of sections (defaults to 1). Someone else can mess with 
+		# Return the number of sections (defaults to 1). Someone else can mess with
 		# sections and section logic
 		return 1
 
 	def tableview_number_of_rows(self, tableview, section):
 		# Return the number of rows in the section
-		return self.currentNumLines  #needed to be in sync with displayed version, 
+		return self.currentNumLines  # needed to be in sync with displayed version
 
 	def tableview_cell_for_row(self, tableview, section, row):
 		# Create and return a cell for the given section/row
@@ -373,9 +373,9 @@ class tvDelegateGen():
 		return self.currentTitle
 
 
-#----------------------------------
+# ----------------------------------
 #     CHORD GENERATOR WINDOW
-#----------------------------------
+# ----------------------------------
 class ChordGenerator(ui.View):
 
 	chord_types = ' '
@@ -388,7 +388,7 @@ class ChordGenerator(ui.View):
 		'Circle 4th': 'Circle4th',
 		'Circle 5th': 'Circle5th'
 	}
-	
+
 	itemlist = [{'title': x, 'value': y} for x, y in titles.items()]
 
 	tv_alter.data_source = tv_alter.delegate = tvDelegateGen(
@@ -399,7 +399,7 @@ class ChordGenerator(ui.View):
 		f'{item}': f'{key}'
 		for key, item in Chord(Note('C')).aliases.items()
 	}
-	
+
 	itemlist = [{'title': x, 'value': y} for x, y in titles.items()]
 
 	tv_type.data_source = tv_type.delegate = tvDelegateType(
@@ -412,13 +412,13 @@ class ChordGenerator(ui.View):
 		'Default': 'Default',
 		'Musthe': 'Musthe',
 	}
-	
+
 	itemlist = [{'title': x, 'value': y} for x, y in titles.items()]
 
 	tv_view.data_source = tv_view.delegate = tvDelegateGen(
-		title='Output', items=itemlist)
+		title='Notation', items=itemlist)
 
-	#-------------------------
+	# -------------------------
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
@@ -489,5 +489,5 @@ class ChordGenerator(ui.View):
 # MAIN
 # -------------------------------
 v = ChordGenerator(name='CHORD GENERATOR')
-v.present('full_screen')
+v.present('popover')
 
