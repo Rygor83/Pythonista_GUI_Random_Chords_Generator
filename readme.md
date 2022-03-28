@@ -1,8 +1,7 @@
-# Chord Generator
+# Chord Generator with random notes and notations.
 
-iOS, “Pythonista 3” application to generate random and circle of 4th/5th list of chords with different chord notation. 
-Application is used with Jazz Piano School, Stage 0 - Laying The Foundation course to practice playing chord. 
-
+iOS, [“Pythonista 3”](http://omz-software.com/pythonista/) application to generate list of chords with random notes and circle of 4th/5th notes with random chord notations.
+Application is used with [Jazz Piano School](https://jazzpianoschool.com/), "Stage 0 - Laying The Foundation" course to practice playing chords
 
 ## Usage
 
@@ -26,14 +25,14 @@ Select the following parameters
      - maj7 (M7): major 7th
      - aug7 (7aug5): augmented 7
      - m7dim5 (m7b5): diminished 7
-3. Chord output: what type of chord notation to use. 
-     - Random: randomize chord notation display. Musthe notation is randomly substituted with all possible chord notation. For example: chord C major can be displayed as Cmaj, CM, C. C minor - Cm, Cmin, C-  
-     - Default: most used notation is used. For example,  C for C major, Cm for C minor. 
-     - MusThe: output that used in Musthe module. 
+3. Notation: what type of chord notation to use. 
+     - Random: randomize chord notations display. [Musthe](https://github.com/gciruelos/musthe) notation is randomly substituted with all possible chord notation. For example: chord **C major** can be displayed as Cmaj, CM, C. **C minor** can be displayed as Cm, Cmin, C-  
+     - Default: 1 most used notation is used. For example, C for C major, Cm for C minor. 
+     - MusThe: output that used in [Musthe](https://github.com/gciruelos/musthe) module. 
  
 Then press “Generate” button. 
 
-4. List of generated chords according to selected parameters. 
+4. List of generated chords is displayed according to selected parameters. 
 
 ## Contributing
 
