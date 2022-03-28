@@ -366,6 +366,7 @@ class tvDelegateGen():
 
 		cell = ui.TableViewCell()
 		cell.text_label.text = self.items[row]['title']
+		cell.accessory_type = self.items[row]['accessory_type']
 		return cell
 
 	def tableview_title_for_header(self, tableview, section):
@@ -389,7 +390,11 @@ class ChordGenerator(ui.View):
 		'Circle 5th': 'Circle5th'
 	}
 
-	itemlist = [{'title': x, 'value': y} for x, y in titles.items()]
+	itemlist = [{
+		'title': x,
+		'value': y,
+		'accessory_type': 'none'
+	} for x, y in titles.items()]
 
 	tv_alter.data_source = tv_alter.delegate = tvDelegateGen(
 		title='Notes', items=itemlist)
@@ -400,7 +405,11 @@ class ChordGenerator(ui.View):
 		for key, item in Chord(Note('C')).aliases.items()
 	}
 
-	itemlist = [{'title': x, 'value': y} for x, y in titles.items()]
+	itemlist = [{
+		'title': x,
+		'value': y,
+		'accessory_type': 'none'
+	} for x, y in titles.items()]
 
 	tv_type.data_source = tv_type.delegate = tvDelegateType(
 		title='Chord type', items=itemlist)
@@ -413,7 +422,11 @@ class ChordGenerator(ui.View):
 		'Musthe': 'Musthe',
 	}
 
-	itemlist = [{'title': x, 'value': y} for x, y in titles.items()]
+	itemlist = [{
+		'title': x,
+		'value': y,
+		'accessory_type': 'none'
+	} for x, y in titles.items()]
 
 	tv_view.data_source = tv_view.delegate = tvDelegateGen(
 		title='Notation', items=itemlist)
@@ -446,12 +459,19 @@ class ChordGenerator(ui.View):
 		txtv_info.text_color = 'red'
 
 		if tv_alter.delegate.selected_item == '':
-			txtv_info.text = 'Select Note type'
+			txtv_info.text = 'Select Note type \n\n 1. Flats - notes with flats and notes without accidentals. Notes will be randomized \n 2. Sharps - notes with sharps and notes without accidentals. Notes will be randomized \n 3. All - all notes (with and without accidentals) \n 4. Circle of 4th - notes will be displayed in strict order of circle of 4th \n 5. Circle of 5th - notes will be displayed in strict order of circle of 5th'
+
+			txtv_info.font = ('verdana-bold', 15)
 		elif tv_type.delegate.selected_items == []:
-			txtv_info.text = 'Select chord type'
+			txtv_info.text = 'Select chord type \n\n Multiple choice is possible. \n - maj (M): major chord \n- min (m): minor chord \n- aug (+): augmented chord \n- dim (°): diminished chord \n- dom7 (7): dominant 7th chord \n- min7 (m7): minor 7th \n- maj7 (M7): major 7th \n- aug7 (7aug5): augmented 7 \n- m7dim5 (m7b5): diminished 7'
+
+			txtv_info.font = ('verdana-bold', 15)
 		elif tv_view.delegate.selected_item == '':
-			txtv_info.text = 'Select output type'
+			txtv_info.text = 'Select notation  \n\n 1. Random: randomize chord notations display. For example: chord C major can be displayed as Cmaj, CM, C. C minor can be displayed as Cm, Cmin, C-  \n\n 2. Default: 1 most used notation is used. For example, C for C major, Cm for C minor. \n\n 3. MusThe: notations that are used in Musthe module.'
+
+			txtv_info.font = ('verdana-bold', 15)
 		else:
+			txtv_info.font = ('verdana-bold', 30)
 			txtv_info.text_color = 'black'
 
 			# loop through notes and chord types

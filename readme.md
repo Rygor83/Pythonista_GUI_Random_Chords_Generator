@@ -14,7 +14,7 @@ Select the following parameters
     - \# (sharp): notes with sharps and notes without accidentals. Notes will be randomized. 
     - all: all notes. Notes will be randomized. 
     - Circle of 4th: notes will be displayed in strict order of circle of 4th. 
-    - Circle of 5th: notes will be displayed in strict order of circle of 4th. 
+    - Circle of 5th: notes will be displayed in strict order of circle of 5th. 
 2. Chord type: what type of chords to use. Multiple choice is possible. 
      - maj (M): major chord
      - min (m): minor chord
@@ -26,9 +26,9 @@ Select the following parameters
      - aug7 (7aug5): augmented 7
      - m7dim5 (m7b5): diminished 7
 3. Notation: what type of chord notation to use. 
-     - Random: randomize chord notations display. [Musthe](https://github.com/gciruelos/musthe) notation is randomly substituted with all possible chord notation. For example: chord **C major** can be displayed as Cmaj, CM, C. **C minor** can be displayed as Cm, Cmin, C-  
+     - Random: randomize chord notations display. For example: chord **C major** can be displayed as Cmaj, CM, C. **C minor** can be displayed as Cm, Cmin, C-  
      - Default: 1 most used notation is used. For example, C for C major, Cm for C minor. 
-     - MusThe: output that used in [Musthe](https://github.com/gciruelos/musthe) module. 
+     - MusThe: notations that are used in [Musthe](https://github.com/gciruelos/musthe) module. 
  
 Then press “Generate” button. 
 
