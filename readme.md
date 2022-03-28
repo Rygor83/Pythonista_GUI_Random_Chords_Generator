@@ -5,7 +5,7 @@ Application is used with [Jazz Piano School](https://jazzpianoschool.com/), "Sta
 
 ## Usage
 
-![](resources/photo.jpeg)
+![](resources/chord_generator_screen.jpeg)
 
 Select the following parameters
 
@@ -33,6 +33,14 @@ Select the following parameters
 Then press “Generate” button. 
 
 4. List of generated chords is displayed according to selected parameters. 
+
+When no parameters are selected, but “Generate” button is pressed then help messages are showed.   
+
+![](resources/note_type_message.png)
+
+![](resources/chord_type_message.png)
+
+![](resources/notation_message.png)
 
 ## Contributing
 
