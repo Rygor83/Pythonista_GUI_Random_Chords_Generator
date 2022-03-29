@@ -36,11 +36,7 @@ Then press “Generate” button.
 
 When no parameters are selected, but “Generate” button is pressed then help messages are showed.   
 
-![](resources/note_type_message.png)
-
-![](resources/chord_type_message.png)
-
-![](resources/notation_message.png)
+![](resources/note_type_message.png) ![](resources/chord_type_message.png) ![](resources/notation_message.png)
 
 ## Contributing
 
