@@ -1,5 +1,7 @@
 # Chord Generator with random notes and notations.
 
+[![ios](resources/os-ios-blue.svg)](https://github.com/Rygor83/Pythonista_GUI_Random_Chords_Generator) [![GitHub license](resources/license-MIT-brightgreen.svg)](https://choosealicense.com/licenses/mit/)
+
 iOS, [“Pythonista 3”](http://omz-software.com/pythonista/) application to generate list of chords with random notes and circle of 4th/5th notes with random chord notations.
 Application is used with [Jazz Piano School](https://jazzpianoschool.com/), "Stage 0 - Laying The Foundation" course to practice playing chords
 
