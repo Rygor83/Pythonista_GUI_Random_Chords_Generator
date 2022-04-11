@@ -6,33 +6,47 @@ import ui
 
 # https://en.m.wikipedia.org/wiki/List_of_chords
 
-
 # --------------------------------
 #    CLASSES FOR chord types
 # --------------------------------
 #             TRIADS
 # --------------------------------
-class Major():
 
-	sym_short = 'M'
+triangle = chr(9651)
+
+
+class ChordsInterface:
+	def __init__():
+		pass
+
+	def replace_with_random_notation(self, chord):
+		pass
+
+	def replace_with_default_notation(self, chord):
+		pass
+
+
+class Major(ChordsInterface):
+	''' major chord '''
+
 	sym = 'maj'
 	sym_default = ''
-	symbols = ['', 'maj', 'M']
+	symbols = ['', 'maj', 'M', triangle]
 
 	def __init__(self):
 		pass
 
-	def replace(self, chord):
+	def replace_with_random_notation(self, chord):
 		random_sym = random.choice(self.symbols)
 		return chord.replace(self.sym, random_sym)
 
-	def replace_default(self, chord):
+	def replace_with_default_notation(self, chord):
 		return chord.replace(self.sym, self.sym_default)
 
 
-class Minor():
+class Minor(ChordsInterface):
+	''' minor chord '''
 
-	sym_short = 'm'
 	sym = 'min'
 	sym_default = 'm'
 	symbols = ['-', 'min', 'm']
@@ -40,76 +54,74 @@ class Minor():
 	def __init__(self):
 		pass
 
-	def replace(self, chord):
+	def replace_with_random_notation(self, chord):
 		random_sym = random.choice(self.symbols)
 		return chord.replace(self.sym, random_sym)
 
-	def replace_default(self, chord):
+	def replace_with_default_notation(self, chord):
 		return chord.replace(self.sym, self.sym_default)
 
 
-class Augmented():
+class Augmented(ChordsInterface):
+	''' augmented chord '''
 
-	sym_short = '+'
 	sym = 'aug'
 	sym_default = 'aug'
-	symbols = ['aug', 'M#5', 'M+5']
+	symbols = ['aug', 'M#5', 'M+5', 'C+']
 
 	def __init__(self):
 		pass
 
-	def replace(self, chord):
+	def replace_with_random_notation(self, chord):
 		random_sym = random.choice(self.symbols)
 		return chord.replace(self.sym, random_sym)
 
-	def replace_default(self, chord):
+	def replace_with_default_notation(self, chord):
 		return chord.replace(self.sym, self.sym_default)
 
 
-class Diminished():
+class Diminished(ChordsInterface):
+	''' diminished chord '''
 
-	sym_short = '°'
 	sym = 'dim'
 	sym_default = 'dim'
-	symbols = ['dim', 'mb5', 'm°5']
+	symbols = ['dim', 'mb5', 'm°5','°']
 
 	def __init__(self):
 		pass
 
-	def replace(self, chord):
+	def replace_with_random_notation(self, chord):
 		random_sym = random.choice(self.symbols)
 		return chord.replace(self.sym, random_sym)
 
-	def replace_default(self, chord):
+	def replace_with_default_notation(self, chord):
 		return chord.replace(self.sym, self.sym_default)
 
 
 # --------------------------------
 #             7th
 # --------------------------------
-class Major7():
+class Major7(ChordsInterface):
+	''' major seventh chord '''
 
-	triangle = chr(9651)
-
-	sym_short = 'M7'
 	sym = 'maj7'
 	sym_default = ''
-	symbols = ['maj7', 'M7', triangle]
+	symbols = ['maj7', 'M7', f'{triangle}7']
 
 	def __init__(self):
 		pass
 
-	def replace(self, chord):
+	def replace_with_random_notation(self, chord):
 		random_sym = random.choice(self.symbols)
 		return chord.replace(self.sym, random_sym)
 
-	def replace_default(self, chord):
+	def replace_with_default_notation(self, chord):
 		return chord.replace(self.sym, self.sym_default)
 
 
-class Minor7():
+class Minor7(ChordsInterface):
+	''' minor seventh chord '''
 
-	sym_short = 'm7'
 	sym = 'min7'
 	sym_default = 'm7'
 	symbols = ['min7', 'm7', '-7']
@@ -117,17 +129,17 @@ class Minor7():
 	def __init__(self):
 		pass
 
-	def replace(self, chord):
+	def replace_with_random_notation(self, chord):
 		random_sym = random.choice(self.symbols)
 		return chord.replace(self.sym, random_sym)
 
-	def replace_default(self, chord):
+	def replace_with_default_notation(self, chord):
 		return chord.replace(self.sym, self.sym_default)
 
 
-class Dominant7():
+class Dominant7(ChordsInterface):
+	''' dominant seventh chord '''
 
-	sym_short = '7'
 	sym = 'dom7'
 	sym_default = '7'
 	symbols = ['dom7', '7']
@@ -135,17 +147,16 @@ class Dominant7():
 	def __init__(self):
 		pass
 
-	def replace(self, chord):
+	def replace_with_random_notation(self, chord):
 		random_sym = random.choice(self.symbols)
 		return chord.replace(self.sym, random_sym)
 
-	def replace_default(self, chord):
+	def replace_with_default_notation(self, chord):
 		return chord.replace(self.sym, self.sym_default)
 
 
-class Augmented7():
+class Augmented7(ChordsInterface):
 
-	sym_short = '+'
 	sym = 'aug7'
 	sym_default = 'aug7'
 	symbols = ['7M#5', '7M+5']
@@ -153,17 +164,16 @@ class Augmented7():
 	def __init__(self):
 		pass
 
-	def replace(self, chord):
+	def replace_with_random_notation(self, chord):
 		random_sym = random.choice(self.symbols)
 		return chord.replace(self.sym, random_sym)
 
-	def replace_default(self, chord):
+	def replace_with_default_notation(self, chord):
 		return chord.replace(self.sym, self.sym_default)
 
 
-class Diminished7():
+class Diminished7(ChordsInterface):
 
-	sym_short = '°'
 	sym = 'm7dim5'
 	sym_default = '7dim'
 	symbols = ['m7b5', 'm7°5']
@@ -171,11 +181,11 @@ class Diminished7():
 	def __init__(self):
 		pass
 
-	def replace(self, chord):
+	def replace_with_random_notation(self, chord):
 		random_sym = random.choice(self.symbols)
 		return chord.replace(self.sym, random_sym)
 
-	def replace_default(self, chord):
+	def replace_with_default_notation(self, chord):
 		return chord.replace(self.sym, self.sym_default)
 
 
@@ -198,16 +208,33 @@ obj = {
 
 def circle(accidentals):
 
-	note = Note('C5')
+	if accidentals == 'Circle4maj':
+			note = Note('C1')
+	elif accidentals == 'Circle5maj':
+			note = Note('C7')
+	elif accidentals == 'Circle4min':
+			note = Note('A1')
+	elif accidentals == 'Circle5min':
+			note = Note('A7')
+	
 	interval = Interval('P4')
 
-	for i in range(8):
+	for i in range(12):
 		yield note
 
-		if accidentals == 'Circle4th':
+		if accidentals in ('Circle4maj','Circle4min'):
 			note = note + interval
-		elif accidentals == 'Circle5th':
+		elif accidentals in ('Circle5maj','Circle5min'):
 			note = note - interval
+		
+		if note.letter == 'C' and note.accidental == 'b':
+			note = Note('B')
+		elif note.letter == 'B' and note.accidental == '#':
+			note = Note('C')
+		elif note.letter == 'E' and note.accidental == '#':
+			note = Note('F')
+		elif note.letter == 'F' and note.accidental == 'b':
+			note = Note('E')
 
 
 def get_notes(accidentals):
@@ -380,14 +407,18 @@ class tvDelegateGen():
 class ChordGenerator(ui.View):
 
 	chord_types = ' '
+	
+	circle = chr(11044)
 
 	# ACCIDENTALS -----------------
 	titles = {
 		'Flats': 'b',
 		'Sharps': '#',
 		'All': 'all',
-		'Circle 4th': 'Circle4th',
-		'Circle 5th': 'Circle5th'
+		f'{circle}of4maj': 'Circle4maj',
+		f'{circle}of4min': 'Circle4min',
+		f'{circle}of5maj': 'Circle5maj',
+		f'{circle}of5min': 'Circle5min'
 	}
 
 	itemlist = [{
@@ -417,8 +448,8 @@ class ChordGenerator(ui.View):
 	# CHORD OUTPUT -----------------
 
 	titles = {
-		'Random': 'Random',
 		'Default': 'Default',
+		'Random': 'Random',
 		'Musthe': 'Musthe',
 	}
 
@@ -479,7 +510,7 @@ class ChordGenerator(ui.View):
 				for item_type in tv_type.delegate.selected_items:
 
 					if tv_alter.delegate.selected_item in (
-							'all', 'Circle4th', 'Circle5th'
+							'all', 'Circle4maj', 'Circle5maj', 'Circle4min', 'Circle5min'
 					) or note.accidental == tv_alter.delegate.selected_item or note.accidental == '':
 
 						new_chord = str(Chord(note, chord_type=item_type['value']))
@@ -489,15 +520,15 @@ class ChordGenerator(ui.View):
 
 							t = obj[item_type['value']]
 
-							new_chord = t.replace(new_chord)
+							new_chord = t.replace_with_random_notation(new_chord)
 
 						elif tv_view.delegate.selected_item == 'Default':
 
 							t = obj[item_type['value']]
-							new_chord = t.replace_default(new_chord)
+							new_chord = t.replace_with_default_notation(new_chord)
 						all_chords.append(new_chord)
 
-			if tv_alter.delegate.selected_item in ('Circle4th', 'Circle5th'):
+			if tv_alter.delegate.selected_item in ('Circle4maj', 'Circle5maj', 'Circle4min', 'Circle5min'):
 				# Circles of 4th or 5th
 				txtv_info.text = ', '.join(all_chords)
 			else:
